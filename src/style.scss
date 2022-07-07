@@ -1,5 +1,52 @@
 $body-color: red;
 
-body {
-  color: $body-color;
+.container {
+  display: flex;
+  width: 1200px;
+  height: 600px;
+}
+
+#playerGameBoard {
+  display: grid;
+  height: 500px;
+  width: 500px;
+  margin: 50px;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  button {
+    height: 50px;
+    width: 50px;
+    background-color: none;
+    border: 0.3px solid black;
+  }
+}
+
+#computerGameBoard {
+  display: grid;
+  height: 500px;
+  width: 500px;
+  margin: 50px;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  button {
+    height: 50px;
+    width: 50px;
+    background-color: none;
+    border: 0.3px solid black;
+  }
+  button:hover {
+    background-color: beige;
+  }
+}
+
+.ship {
+  background-color: rgb(79, 79, 79);
+}
+
+.hit {
+  background-color: rgb(99, 169, 243);
+}
+
+.shipHit {
+  background-color: red;
 }
