@@ -12,9 +12,6 @@ const Gameloop = (() => {
   const playerBoard = Gameboard();
   const computerBoard = Gameboard();
 
-  userInterface.renderPlayerGameboard(playerBoard);
-  userInterface.renderComputerGameBoard(computerBoard);
-
   //the placement of ships to be determined by drag and drop in final ver.
 
   playerBoard.placeShip("carrier", "vertical", 1, 2);
@@ -24,31 +21,30 @@ const Gameloop = (() => {
   playerBoard.placeShip("patrol boat", "vertical", 0, 0);
 
   computerBoard.placeShip("carrier", "vertical", 1, 2);
-  computerBoard.placeShip("battleship", "vertical", 5, 3);
-  computerBoard.placeShip("destroyer", "vertical", 6, 3);
+  computerBoard.placeShip("battleship", "vertical", 3, 0);
+  computerBoard.placeShip("destroyer", "vertical", 5, 3);
   computerBoard.placeShip("submarine", "vertical", 7, 6);
   computerBoard.placeShip("patrol boat", "vertical", 0, 0);
 
-  //the updating of the gameboards needs to be called every
+  userInterface.renderPlayerGameboard(playerBoard);
+  userInterface.renderComputerGameBoard(computerBoard);
 
-  userInterface.updatePlayerGameboard(playerBoard);
-  userInterface.updateComputerGameboard(computerBoard);
+  //the updating of the gameboards needs to be called every time attack received
+  const computerGameBoardCells =
+    document.querySelectorAll(".computerBoardCell");
 
-  const computerGameBoardCells = document.getElementById("computerGameBoard");
+  computerGameBoardCells.forEach(function (cell) {
+    cell.addEventListener("click", function (e) {
+      const cell = e.target.id;
+      const location = cell.split(/\[(-?\d+)\]/);
+      const row = location.splice(1, 2).join("");
+      const col = location.splice(1, 2).join("");
 
-  computerGameBoardCells.addEventListener("click", function (e) {
-    const cell = e.target.id;
-    const location = cell.split(/\[(-?\d+)\]/);
-    const row = location.splice(0, 3).join("");
-    const col = location.splice(0, 3).join("");
-    if (player.playerTurn === true) {
-      player.takeTurn();
       computerBoard.receiveAttack(row, col);
+
+      userInterface.updatePlayerGameboard(playerBoard);
       userInterface.updateComputerGameboard(computerBoard);
-      const compboard = computerBoard.getBoard();
-      const playboard = playerBoard.getBoard();
-      console.log(compboard[row][col], playboard[row][col]);
-    }
+    });
   });
 })();
 
