@@ -1,14 +1,12 @@
 const Player = (type) => {
   const playerType = type;
-  let playerTurn = false;
+  let playerTurn = true;
 
   const takeTurn = () => {
     if (playerTurn === false) {
       playerTurn = true;
-      return playerTurn;
     } else {
       playerTurn = false;
-      return playerTurn;
     }
   };
 
@@ -33,7 +31,7 @@ const Player = (type) => {
     //after random move has been selected, compare to previous moves and if it matches any of them, pick new move until a unique move has been found
   };
 
-  return { takeTurn };
+  return { playerTurn, takeTurn };
 };
 
 module.exports = Player;
