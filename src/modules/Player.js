@@ -1,7 +1,4 @@
 const Player = (type) => {
-  const playerType = type;
-  let playerTurn = true;
-
   const takeTurn = () => {
     if (playerTurn === false) {
       playerTurn = true;
@@ -10,28 +7,32 @@ const Player = (type) => {
     }
   };
 
-  const computerMove = () => {
-    const moves = [];
-    let row = randomMove();
-    let col = randomMove();
+  // computer moves
 
-    const randomMove = () => {
-      return Math.floor(Math.random() * 11);
-    };
+  const possibleMoves = [];
 
-    const checkMoves = () => {
-      array.forEach((element) => {
-        if (JSON.stringify(element) == [row][col]) {
-          row = randomMove();
-          col = randomMove();
-        }
-      });
-    };
+  const fillPossibleMoves = (() => {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        possibleMoves.push([i, j]);
+      }
+    }
+  })();
 
-    //after random move has been selected, compare to previous moves and if it matches any of them, pick new move until a unique move has been found
+  const randomMove = () => {
+    const index = Math.floor(Math.random() * possibleMoves.length);
+    const move = possibleMoves.splice(index, 1);
+    return move;
   };
 
-  return { playerTurn, takeTurn };
+  const computerMove = (playerBoard) => {
+    const moves = randomMove();
+    const row = moves[0][0];
+    const col = moves[0][1];
+    playerBoard.receiveAttack(row, col);
+  };
+
+  return { takeTurn, computerMove };
 };
 
 module.exports = Player;

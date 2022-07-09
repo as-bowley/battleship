@@ -5,3 +5,6 @@ const Gameboard = require("./modules/Gameboard");
 const Ship = require("./modules/Ship");
 const Dom = require("./modules/Dom");
 const Gameloop = require("./modules/Gameloop");
+
+const start = document.getElementById("startButton");
+start.addEventListener("click", Gameloop.startGame);

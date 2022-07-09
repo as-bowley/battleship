@@ -19,20 +19,17 @@ const Gameboard = () => {
       const shipName = gameBoard[row][col].ship;
       gameBoard[row][col].isHit = true;
       hitShip.hit(gameBoard[row][col].index);
-      console.log(shipName);
       if (checkShipSunk(hitShip) === true) {
         for (let i = 0; i < gameBoard.length; i++) {
           for (let j = 0; j < gameBoard[i].length; j++) {
             if (gameBoard[i][j].ship == shipName) {
               gameBoard[i][j].sunk = true;
-              console.log(hitShip);
             }
           }
         }
       }
     } else {
       gameBoard[row][col] = { isHit: true };
-      console.log(gameBoard[row][col]);
     }
   };
 

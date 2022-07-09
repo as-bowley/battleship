@@ -14,9 +14,7 @@ const Dom = () => {
         const cell = document.createElement("button");
         cell.setAttribute("id", `player: [${i}][${j}]`);
         cell.classList.add("playerBoardCell");
-        if (playerBoard[i][j].ship) {
-          cell.classList.add("ship");
-        }
+
         playerBoardContainer.appendChild(cell);
       }
     }
@@ -30,9 +28,7 @@ const Dom = () => {
         const cell = document.createElement("button");
         cell.setAttribute("id", `computer: [${i}][${j}]`);
         cell.classList.add("computerBoardCell");
-        // if (computerBoard[i][j].ship) {
-        //   cell.classList.add("ship");
-        // }
+
         computerBoardContainer.appendChild(cell);
       }
     }
@@ -44,7 +40,9 @@ const Dom = () => {
     for (let i = 0; i < playerBoard.length; i++) {
       for (let j = 0; j < playerBoard[i].length; j++) {
         const button = document.getElementById(`player: [${i}][${j}]`);
-
+        if (playerBoard[i][j].ship) {
+          button.classList.add("ship");
+        }
         if (playerBoard[i][j].isHit === true && playerBoard[i][j].ship) {
           button.classList.add("shipHit");
         } else if (playerBoard[i][j].isHit === true) {
