@@ -17,6 +17,23 @@ const Gameloop = (() => {
 
   const playerGameBoardCells = document.querySelectorAll(".playerBoardCell");
   const rotateButton = document.getElementById("rotateButton");
+  const messageDiv = document.getElementById("gameMessages");
+
+  const setGameMessage = () => {
+    if (carrier === false) {
+      messageDiv.innerText = "Place your carrier";
+    } else if (battleship === false) {
+      messageDiv.innerText = "Place your battleship";
+    } else if (destroyer === false) {
+      messageDiv.innerText = "Place your destroyer";
+    } else if (submarine === false) {
+      messageDiv.innerText = "Place your submarine";
+    } else if (patrolBoat === false) {
+      messageDiv.innerText = "Place your patrol boat";
+    } else {
+      messageDiv.innerText = "Press start tto begin";
+    }
+  };
 
   //declare all ships with boolean
   //go through each ship with if statement when using mouseover function or onclick for placeship function e.g. if (carrier === true) {length = 5} & if (carrier === true) {placeShip(carrier....) then carrier = false}
@@ -99,7 +116,7 @@ const Gameloop = (() => {
       col = location.splice(1, 2).join("");
     }
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < length + 1; i++) {
       if (direction == "horizontal") {
         const nextCell = document.getElementById(
           `player: [${row}][${limitCellValue(col + i)}]`
@@ -114,20 +131,25 @@ const Gameloop = (() => {
     }
   };
 
+  const removeEventListeners = () => {
+    playerGameBoardCells.forEach(function (e) {
+      e.style.pointerEvents = "none";
+    });
+  };
   playerGameBoardCells.forEach(function (cell) {
-    cell.addEventListener("mouseover", function (e) {
+    cell.addEventListener("mouseover", function mouseover(e) {
       e.target.classList.add("shipPlacement");
       const cell = e.target.id;
 
       addExtraCells(cell, direction, showShipLength());
     });
-    cell.addEventListener("mouseleave", function (e) {
+    cell.addEventListener("mouseleave", function mouseleave(e) {
       e.target.classList.remove("shipPlacement");
       const cell = e.target.id;
 
       removeExtraCells(cell, direction, showShipLength());
     });
-    cell.addEventListener("click", function (e) {
+    cell.addEventListener("click", function click(e) {
       const cell = e.target.id;
       const location = cell.split(/\[(-?\d+)\]/);
       const row = location.splice(1, 2).join("");
@@ -136,6 +158,7 @@ const Gameloop = (() => {
         playerBoard.placeShip("carrier", direction, Number(row), Number(col));
         userInterface.updatePlayerGameboard(playerBoard);
         carrier = true;
+        setGameMessage();
       } else if (battleship === false) {
         playerBoard.placeShip(
           "battleship",
@@ -145,14 +168,17 @@ const Gameloop = (() => {
         );
         userInterface.updatePlayerGameboard(playerBoard);
         battleship = true;
+        setGameMessage();
       } else if (destroyer === false) {
         playerBoard.placeShip("destroyer", direction, Number(row), Number(col));
         userInterface.updatePlayerGameboard(playerBoard);
         destroyer = true;
+        setGameMessage();
       } else if (submarine === false) {
         playerBoard.placeShip("submarine", direction, Number(row), Number(col));
         userInterface.updatePlayerGameboard(playerBoard);
         submarine = true;
+        setGameMessage();
       } else {
         playerBoard.placeShip(
           "patrol boat",
@@ -162,6 +188,8 @@ const Gameloop = (() => {
         );
         userInterface.updatePlayerGameboard(playerBoard);
         patrolBoat = true;
+        setGameMessage();
+        removeEventListeners();
       }
     });
   });
@@ -169,12 +197,6 @@ const Gameloop = (() => {
   //the placement of ships to be determined by drag and drop in final ver.
 
   const startGame = () => {
-    playerBoard.placeShip("carrier", "vertical", 1, 2);
-    playerBoard.placeShip("battleship", "vertical", 3, 0);
-    playerBoard.placeShip("destroyer", "vertical", 5, 3);
-    playerBoard.placeShip("submarine", "vertical", 7, 6);
-    playerBoard.placeShip("patrol boat", "vertical", 0, 0);
-
     computerBoard.placeShip("carrier", "vertical", 1, 2);
     computerBoard.placeShip("battleship", "vertical", 3, 0);
     computerBoard.placeShip("destroyer", "vertical", 5, 3);
@@ -202,9 +224,10 @@ const Gameloop = (() => {
         userInterface.updateComputerGameboard(computerBoard);
       });
     });
+    messageDiv.innerText = "Attack the computers board!";
   };
 
-  return { startGame };
+  return { startGame, setGameMessage };
 })();
 
 module.exports = Gameloop;

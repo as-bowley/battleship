@@ -46,9 +46,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 180px;
   button {
     margin: 20px;
     padding: 10px;
+  }
+  #gameMessages {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 

@@ -8,3 +8,4 @@ const Gameloop = require("./modules/Gameloop");
 
 const start = document.getElementById("startButton");
 start.addEventListener("click", Gameloop.startGame);
+Gameloop.setGameMessage();
