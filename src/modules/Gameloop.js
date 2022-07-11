@@ -31,15 +31,9 @@ const Gameloop = (() => {
     } else if (patrolBoat === false) {
       messageDiv.innerText = "Place your patrol boat";
     } else {
-      messageDiv.innerText = "Press start tto begin";
+      messageDiv.innerText = "Press start to begin";
     }
   };
-
-  //declare all ships with boolean
-  //go through each ship with if statement when using mouseover function or onclick for placeship function e.g. if (carrier === true) {length = 5} & if (carrier === true) {placeShip(carrier....) then carrier = false}
-  //effectively just using a boolean to determine the next in the chain
-
-  //need to implement the direction of ships
 
   let carrier = false;
   let battleship = false;
@@ -73,6 +67,39 @@ const Gameloop = (() => {
   const limitCellValue = (num, min = 0, max = 9) => {
     const parsed = parseInt(num);
     return Math.min(Math.max(parsed, min), max);
+  };
+
+  const checkForPlacement = (cell, direction, length) => {
+    let location = cell.split(/\[(-?\d+)\]/);
+    let row;
+    let col;
+
+    if (direction == "horizontal") {
+      row = location.splice(1, 2).join("");
+      col = Number(location.splice(1, 2).join("")) + 1;
+    } else {
+      row = Number(location.splice(1, 2).join("")) + 1;
+      col = location.splice(1, 2).join("");
+    }
+
+    for (let i = -1; i < length; i++) {
+      if (direction == "horizontal") {
+        const nextCell = document.getElementById(
+          `player: [${row}][${limitCellValue(col + i)}]`
+        );
+        if (nextCell.classList.contains("ship")) {
+          return true;
+        }
+      } else {
+        const nextCell = document.getElementById(
+          `player: [${limitCellValue(row + i)}][${col}]`
+        );
+        if (nextCell.classList.contains("ship")) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   const addExtraCells = (cell, direction, length) => {
@@ -151,45 +178,62 @@ const Gameloop = (() => {
     });
     cell.addEventListener("click", function click(e) {
       const cell = e.target.id;
-      const location = cell.split(/\[(-?\d+)\]/);
-      const row = location.splice(1, 2).join("");
-      const col = location.splice(1, 2).join("");
-      if (carrier === false) {
-        playerBoard.placeShip("carrier", direction, Number(row), Number(col));
-        userInterface.updatePlayerGameboard(playerBoard);
-        carrier = true;
-        setGameMessage();
-      } else if (battleship === false) {
-        playerBoard.placeShip(
-          "battleship",
-          direction,
-          Number(row),
-          Number(col)
-        );
-        userInterface.updatePlayerGameboard(playerBoard);
-        battleship = true;
-        setGameMessage();
-      } else if (destroyer === false) {
-        playerBoard.placeShip("destroyer", direction, Number(row), Number(col));
-        userInterface.updatePlayerGameboard(playerBoard);
-        destroyer = true;
-        setGameMessage();
-      } else if (submarine === false) {
-        playerBoard.placeShip("submarine", direction, Number(row), Number(col));
-        userInterface.updatePlayerGameboard(playerBoard);
-        submarine = true;
-        setGameMessage();
+
+      const checkClear = checkForPlacement(cell, direction, showShipLength());
+
+      if (checkClear === false) {
+        const location = cell.split(/\[(-?\d+)\]/);
+        const row = location.splice(1, 2).join("");
+        const col = location.splice(1, 2).join("");
+        if (carrier === false) {
+          playerBoard.placeShip("carrier", direction, Number(row), Number(col));
+          userInterface.updatePlayerGameboard(playerBoard);
+          carrier = true;
+          setGameMessage();
+        } else if (battleship === false) {
+          playerBoard.placeShip(
+            "battleship",
+            direction,
+            Number(row),
+            Number(col)
+          );
+          userInterface.updatePlayerGameboard(playerBoard);
+          battleship = true;
+          setGameMessage();
+        } else if (destroyer === false) {
+          playerBoard.placeShip(
+            "destroyer",
+            direction,
+            Number(row),
+            Number(col)
+          );
+          userInterface.updatePlayerGameboard(playerBoard);
+          destroyer = true;
+          setGameMessage();
+        } else if (submarine === false) {
+          playerBoard.placeShip(
+            "submarine",
+            direction,
+            Number(row),
+            Number(col)
+          );
+          userInterface.updatePlayerGameboard(playerBoard);
+          submarine = true;
+          setGameMessage();
+        } else {
+          playerBoard.placeShip(
+            "patrol boat",
+            direction,
+            Number(row),
+            Number(col)
+          );
+          userInterface.updatePlayerGameboard(playerBoard);
+          patrolBoat = true;
+          setGameMessage();
+          removeEventListeners();
+        }
       } else {
-        playerBoard.placeShip(
-          "patrol boat",
-          direction,
-          Number(row),
-          Number(col)
-        );
-        userInterface.updatePlayerGameboard(playerBoard);
-        patrolBoat = true;
-        setGameMessage();
-        removeEventListeners();
+        messageDiv.innerText = "Not a valid placement!";
       }
     });
   });
