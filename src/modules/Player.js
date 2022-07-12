@@ -32,7 +32,68 @@ const Player = (type) => {
     playerBoard.receiveAttack(row, col);
   };
 
-  return { takeTurn, computerMove };
+  const placeComputerShipRandomly = (ship, board, gameboardObject, length) => {
+    const directionArray = ["vertical", "horizontal"];
+    const direction =
+      directionArray[Math.floor(Math.random() * directionArray.length)];
+    let row = getRandomRow(direction, length);
+    let col = getRandomCol(direction, length);
+
+    if (boardChecker(board, direction, length, row, col) === false) {
+      gameboardObject.placeShip(ship, direction, row, col);
+    } else {
+      placeComputerShipRandomly(ship, board, gameboardObject, length);
+    }
+  };
+
+  const boardChecker = (board, direction, length, row, col) => {
+    for (let i = 0; i < length + 1; i++) {
+      if (direction == "vertical") {
+        console.log(
+          row,
+          col + i,
+          board[row][col + i],
+          board[row][col + i].hasOwnProperty("ship")
+        );
+        if (board[row][col + i].hasOwnProperty("ship")) {
+          return true;
+        }
+      } else {
+        console.log(
+          row,
+          col + i,
+          board[row + i][col],
+          board[row + i][col].hasOwnProperty("ship")
+        );
+        if (board[row + i][col].hasOwnProperty("ship")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const getRandomRow = (direction, length) => {
+    if (direction == "vertical") {
+      return Math.floor(Math.random() * 10);
+    } else {
+      return Math.floor(Math.random() * (10 - length));
+    }
+  };
+
+  const getRandomCol = (direction, length) => {
+    if (direction == "vertical") {
+      return Math.floor(Math.random() * (10 - length));
+    } else {
+      return Math.floor(Math.random() * 10);
+    }
+  };
+
+  return {
+    takeTurn,
+    computerMove,
+    placeComputerShipRandomly,
+  };
 };
 
 module.exports = Player;

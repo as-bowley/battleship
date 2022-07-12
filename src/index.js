@@ -8,4 +8,5 @@ const Gameloop = require("./modules/Gameloop");
 
 const start = document.getElementById("startButton");
 start.addEventListener("click", Gameloop.startGame);
-Gameloop.setGameMessage();
+const resetGame = document.getElementById("resetButton");
+resetGame.addEventListener("click", Gameloop);

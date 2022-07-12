@@ -51,6 +51,10 @@ body {
     margin: 20px;
     padding: 10px;
   }
+  #startButton.disabled {
+    pointer-events: none;
+    background-color: rgb(237, 237, 237);
+  }
   #gameMessages {
     display: flex;
     flex-wrap: wrap;
@@ -63,16 +67,23 @@ body {
 
 .hit {
   background-color: rgb(99, 169, 243);
+  pointer-events: none;
 }
 
 .shipHit {
   background-color: red;
+  pointer-events: none;
 }
 
 .sunk {
   background-color: rgb(132, 2, 2);
+  pointer-events: none;
 }
 
 .shipPlacement {
   background-color: darkslateblue;
+}
+
+.disabled {
+  pointer-events: none;
 }
