@@ -7,17 +7,22 @@
     <title>Battleship</title>
   <script defer src="index.bundle.js"></script></head>
   <body>
+    <h1>Battleship</h1>
+    <div id="gameMessages"></div>
     <div class="container">
-      <div id="playerDisplay">
-        <h2>Player</h2>
-        <button id="rotateButton">Rotate</button>
-        <button id="resetButton">Reset</button>
-        <button id="startButton" class="disabled">Start</button>
-        <div id="gameMessages"></div>
-      </div>
       <div id="playerGameBoard"></div>
       <div id="computerGameBoard"></div>
-      <div>
+    </div>
+    <div id="bottomContainer">
+      <div id="playerDisplay">
+        <h2>Player</h2>
+      </div>
+      <div id="buttons">
+        <button id="startButton" class="disabled">Start</button>
+        <button id="rotateButton">Rotate</button>
+        <button id="resetButton">Reset</button>
+      </div>
+      <div id="computerDisplay">
         <h2>Computer</h2>
       </div>
     </div>

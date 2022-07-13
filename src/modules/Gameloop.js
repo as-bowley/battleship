@@ -7,13 +7,14 @@ const Gameloop = (() => {
   let player = Player("human");
   let computer = Player("computer");
 
-  const playerBoard = Gameboard();
-  const computerBoard = Gameboard();
+  let playerBoard = Gameboard();
+  let computerBoard = Gameboard();
 
-  const userInterface = Dom();
+  let userInterface = Dom();
 
-  const setMessageDisplay = userInterface.setGameMessage();
-  const setRotateButton = userInterface.rotateButtonListener();
+  let setMessageDisplay = userInterface.setGameMessage();
+  let setRotateButton = userInterface.rotateButtonListener();
+  const startButton = document.getElementById("startButton");
 
   userInterface.renderPlayerGameboard(playerBoard);
   userInterface.renderComputerGameBoard(computerBoard);
@@ -28,7 +29,44 @@ const Gameloop = (() => {
     userInterface
   );
 
+  const resetGame = () => {
+    const playerBoardContainer = document.getElementById("playerGameBoard");
+    const computerBoardContainer = document.getElementById("computerGameBoard");
+
+    playerBoardContainer.innerHTML = "";
+    computerBoardContainer.innerHTML = "";
+    startButton.classList.add("disabled");
+
+    player = Player("human");
+    computer = Player("computer");
+
+    playerBoard = Gameboard();
+    computerBoard = Gameboard();
+
+    userInterface = Dom();
+
+    setMessageDisplay = userInterface.setGameMessage();
+    setRotateButton = userInterface.rotateButtonListener();
+
+    userInterface.renderPlayerGameboard(playerBoard);
+    userInterface.renderComputerGameBoard(computerBoard);
+
+    const playerGameBoardCells = document.querySelectorAll(".playerBoardCell");
+
+    playerGameBoardCells.forEach(function (e) {
+      e.style.pointerEvents = "all";
+    });
+
+    userInterface.playerListeners(
+      playerGameBoardCells,
+      playerBoard,
+      userInterface
+    );
+  };
+
   const startGame = () => {
+    startButton.classList.add("disabled");
+
     computer.placeComputerShipRandomly(
       "carrier",
       computerBoard.getBoard(),
@@ -93,7 +131,7 @@ const Gameloop = (() => {
     userInterface.messageDiv.innerText = "Attack the computers board!";
   };
 
-  return { startGame };
+  return { startGame, resetGame };
 })();
 
 module.exports = Gameloop;

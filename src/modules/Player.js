@@ -49,22 +49,10 @@ const Player = (type) => {
   const boardChecker = (board, direction, length, row, col) => {
     for (let i = 0; i < length + 1; i++) {
       if (direction == "vertical") {
-        console.log(
-          row,
-          col + i,
-          board[row][col + i],
-          board[row][col + i].hasOwnProperty("ship")
-        );
         if (board[row][col + i].hasOwnProperty("ship")) {
           return true;
         }
       } else {
-        console.log(
-          row,
-          col + i,
-          board[row + i][col],
-          board[row + i][col].hasOwnProperty("ship")
-        );
         if (board[row + i][col].hasOwnProperty("ship")) {
           return true;
         }

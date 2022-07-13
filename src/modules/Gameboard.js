@@ -66,7 +66,6 @@ const Gameboard = () => {
   const setShipLocation = (name, length, orientation, startRow, startCol) => {
     if (orientation == "vertical") {
       for (let i = 0; i < length; i++) {
-        console.log(startRow, startCol);
         gameBoard[startRow][startCol + i] = {
           isHit: false,
           ship: name,
@@ -76,7 +75,6 @@ const Gameboard = () => {
       }
     } else {
       for (let i = 0; i < length; i++) {
-        console.log(startRow, startCol);
         gameBoard[startRow + i][startCol] = {
           isHit: false,
           ship: name,
