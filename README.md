@@ -1,4 +1,4 @@
-### Battleship
+# Battleship
 
 ![](https://i.imgur.com/fYUkelF.gif)
 
